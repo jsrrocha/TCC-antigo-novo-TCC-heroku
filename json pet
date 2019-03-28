@@ -1,3 +1,6 @@
+
+
+
 {
   
     "type" : "DOG",
@@ -14,5 +17,44 @@
     "description" : "coleira etc",
     "lostPet" : "true",
     "remove" : "true",
-    "RemovalReason" : "LEAVESYSTEM"  
+    "removalReason" : "LEAVESYSTEM"  
 }
+
+{
+    "type" : "CAT",
+    "sex" : "FEMALE",
+    "size" : "P",
+    "furColor" : "DARK",
+    "lifeStage" : "ADULT",
+    "photo" : "22052000",
+    "date" : "22092016",
+    "latitude" : "44433",
+    "longitude" : "4343",
+    "phone" : "3333333",
+    "phoneWithWhats" : "true",
+    "description" : "lala etc",
+    "lostPet" : "true",
+    "remove" : "false"
+}
+
+public enum Types {
+		DOG,CAT
+	} 
+	public enum Sex {
+		MALE,FEMALE 
+	} 
+	public enum Size {
+		P,M,G,GG	
+	} 
+
+	public enum FurColor {
+		BRIGHT,DARK,TABBLY, WITHPOLKADOTS	
+	} 
+
+	public enum LifeStages {
+		PUPPY,ADULT,OLD
+	} 
+	
+	public enum RemovalReason {
+		FIND,LEAVESYSTEM 
+	} 
