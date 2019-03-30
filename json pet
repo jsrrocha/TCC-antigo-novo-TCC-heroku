@@ -3,11 +3,11 @@
 
 {
   
-    "type" : "DOG",
-    "sex" : "MALE",
-    "size" : "P",
-    "furColor" : "DARK",
-    "lifeStage" : "ADULT",
+    "type" : "0",
+    "sex" : "0",
+    "size" : "0",
+    "furColor" : "1",
+    "lifeStage" : "1",
     "photo" : "22052000",
     "date" : "22092016",
     "latitude" : "44433",
@@ -17,15 +17,15 @@
     "description" : "coleira etc",
     "lostPet" : "true",
     "remove" : "true",
-    "removalReason" : "LEAVESYSTEM"  
+    "removalReason" : "1"  
 }
 
 {
-    "type" : "CAT",
-    "sex" : "FEMALE",
-    "size" : "P",
-    "furColor" : "DARK",
-    "lifeStage" : "ADULT",
+    "type" : "1",
+    "sex" : "1",
+    "size" : "0",
+    "furColor" : "2",
+    "lifeStage" : "1",
     "photo" : "22052000",
     "date" : "22092016",
     "latitude" : "44433",
@@ -48,9 +48,9 @@ public enum Types {
 	} 
 
 	public enum FurColor {
-		BRIGHT,DARK,TABBLY, WITHPOLKADOTS	
-	} 
-
+		WHITE,DARK,WHITEANDDARK,CARAMEL,GRAY,STRIPED,WITHPOLKADOTS,ORANGE
+	}
+ 
 	public enum LifeStages {
 		PUPPY,ADULT,OLD
 	} 
