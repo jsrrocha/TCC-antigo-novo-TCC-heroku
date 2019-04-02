@@ -7,13 +7,7 @@
     "password" : "pass",
     "phone" : "3333333",
     "phoneWithWhats" : "true",
-    "pet": [
-	    {
-		"type" : "1",
-   		"sex" : "1",
-    		"size" : "0"
-            }
-	   ]
+    "idPet" "1"
 }
 
 

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rest-client version="3.2.2"><request><http-version>1.1</http-version><http-follow-redirects/><URL>http://localhost:8086/cademeubichinho/user</URL><method>POST</method><body><string content-type="application/json" charset="UTF-8">
+
+
+{
+    "name" : "name",
+    "email" : "jess@hotmail.com",
+    "password" : "pass",
+    "phone" : "3333333",
+    "phoneWithWhats" : "true",
+    "pets": [
+	    {
+		"id" : "1"
+            }
+	   ]
+}
+
+</string></body></request></rest-client>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rest-client version="3.2.2"><request><http-version>1.1</http-version><http-follow-redirects/><URL>http://localhost:8086/cademeubichinho/pet</URL><method>POST</method><body><string content-type="application/json" charset="UTF-8">{
+  
+    "type" : "0",
+    "sex" : "0",
+    "size" : "0",
+    "furColor" : "1",
+    "lifeStage" : "1",
+    "photo" : "22052000",
+    "date" : "22092016",
+    "latitude" : "44433",
+    "longitude" : "4343",
+    "phone" : "3333333",
+    "phoneWithWhats" : "true",
+    "description" : "coleira etc",
+    "lostPet" : "true",
+    "remove" : "false"
+}
+</string></body></request></rest-client>

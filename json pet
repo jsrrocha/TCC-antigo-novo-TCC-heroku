@@ -16,8 +16,7 @@
     "phoneWithWhats" : "true",
     "description" : "coleira etc",
     "lostPet" : "true",
-    "remove" : "true",
-    "removalReason" : "1"  
+    "remove" : "false"
 }
 
 {
