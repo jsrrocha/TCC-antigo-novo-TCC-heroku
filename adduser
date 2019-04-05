@@ -8,11 +8,7 @@
     "password" : "pass",
     "phone" : "3333333",
     "phoneWithWhats" : "true",
-    "pets": [
-	    {
-		"id" : "1"
-            }
-	   ]
+   "idPet":"1"
 }
 
 </string></body></request></rest-client>
