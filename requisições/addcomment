@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rest-client version="3.2.2"><request><http-version>1.1</http-version><http-follow-redirects/><URL>http://localhost:8086/cademeubichinho/comment</URL><method>POST</method><body><string content-type="application/json" charset="UTF-8">
+{
+    "comment" : "comentario",
+    "idPet": "1",
+    "idReceived": "3",  
+    "idSend": "3"
+}
+</string></body></request></rest-client>

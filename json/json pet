@@ -1,0 +1,59 @@
+
+
+
+{
+  
+    "type" : "0",
+    "sex" : "0",
+    "size" : "0",
+    "furColor" : "1",
+    "lifeStage" : "1",
+    "photo" : "22052000",
+    "date" : "22092016",
+    "latitude" : "-30.032616",
+    "longitude" : "-51.231016",
+    "phone" : "3333333",
+    "phoneWithWhats" : "true",
+    "description" : "coleira etc",
+    "lostPet" : "true",
+    "remove" : "false"
+}
+
+{
+    "type" : "1",
+    "sex" : "1",
+    "size" : "0",
+    "furColor" : "2",
+    "lifeStage" : "1",
+    "photo" : "22052000",
+    "date" : "22092016",
+    "latitude" : "-30.031603",
+    "longitude" : "-51.229404",
+    "phone" : "3333333",
+    "phoneWithWhats" : "true",
+    "description" : "lala etc",
+    "lostPet" : "true",
+    "remove" : "false"
+}
+
+public enum Types {
+		DOG,CAT
+	} 
+	public enum Sex {
+		MALE,FEMALE 
+	} 
+	public enum Size {
+		P,M,G,GG	
+	} 
+
+	public enum FurColor {
+		WHITE,DARK,WHITEANDDARK,CARAMEL,GRAY,STRIPED,WITHPOLKADOTS,ORANGE
+	}
+ 
+	public enum LifeStages {
+		PUPPY,ADULT,OLD
+	} 
+	
+	public enum RemovalReason {
+		FIND,LEAVESYSTEM 
+	} 
