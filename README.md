@@ -1,8 +1,10 @@
 # TCC
-#npm install @agm/core --save
+npm install
 
-#npm install --save @types/googlemaps
+npm install @agm/core --save
 
-#npm install --save @angular/material @angular/cdk @angular/animations
+npm install --save @types/googlemaps
 
-#npm install --save hammerjs
+npm install --save @angular/material @angular/cdk @angular/animations
+
+npm install --save hammerjs
