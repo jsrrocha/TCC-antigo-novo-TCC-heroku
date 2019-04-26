@@ -31,7 +31,7 @@ public class UserController {
 	PetRepository petRepository;
 	
 	@Transactional 
-	@PostMapping("")
+	@PostMapping("/add")
 	public ResponseEntity<?> adduser(@RequestBody Map<String, String> userMap){
 		try {
 			if(userMap.get("email") == null) {

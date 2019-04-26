@@ -4,7 +4,6 @@ package com.tcc.CadeMeuBichinho.controller;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
-
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,10 +19,9 @@ import com.tcc.CadeMeuBichinho.Repository.PetRepository;
 import com.tcc.CadeMeuBichinho.model.Pet;
 import com.tcc.CadeMeuBichinho.model.Pet.RemovalReason;
 import com.tcc.CadeMeuBichinho.model.Pet.FurColor;
-import com.tcc.CadeMeuBichinho.model.Pet.LifeStages;
+import com.tcc.CadeMeuBichinho.model.Pet.LifeStage;
 import com.tcc.CadeMeuBichinho.model.Pet.Sex;
-import com.tcc.CadeMeuBichinho.model.Pet.Size;
-import com.tcc.CadeMeuBichinho.model.Pet.Type;
+import com.tcc.CadeMeuBichinho.model.Pet.Specie;
 
 @RestController
 @RequestMapping("pet")
@@ -32,7 +30,7 @@ public class PetController {
 	@Autowired
 	PetRepository petRepository;
 
-	@PostMapping("")
+	@PostMapping("/add")
 	public ResponseEntity<?> addPet(@RequestBody Pet pet){
 		try {
 			//quando adicionar um pet confere se o 
@@ -65,22 +63,20 @@ public class PetController {
 			}
 
 			Pet editPet = optionalPet.get();
+			if(petMap.get("name") != null) {
+				editPet.setName(petMap.get("name"));
+			}
+			
 			if(petMap.get("type") != null) {
 				Integer index = Integer.parseInt(petMap.get("type"));
-				Type type = Type.values()[index];  
-				editPet.setType(type); 
+				Specie type = Specie.values()[index];  
+				editPet.setSpecie(type); 
 			}
 
 			if(petMap.get("sex") != null) {
 				Integer index = Integer.parseInt(petMap.get("sex"));
 				Sex sex = Sex.values()[index];  
 				editPet.setSex(sex);
-			}
-
-			if(petMap.get("size") != null) {
-				Integer index = Integer.parseInt(petMap.get("size"));
-				Size size = Size.values()[index];  
-				editPet.setSize(size);
 			}
 
 			if(petMap.get("furColor") != null) {
@@ -91,12 +87,10 @@ public class PetController {
 
 			if(petMap.get("lifeStages") != null) {
 				Integer index = Integer.parseInt(petMap.get("lifeStages"));
-				LifeStages lifeStage = LifeStages.values()[index];  
+				LifeStage lifeStage = LifeStage.values()[index];  
 				editPet.setLifeStage(lifeStage);
 			}
 
-
-			//Testar quando o front tiver ok..
 			if(petMap.get("photo") != null) {
 				byte[] backToBytes = Base64.decodeBase64(petMap.get("photo"));
 				editPet.setPhoto(backToBytes);

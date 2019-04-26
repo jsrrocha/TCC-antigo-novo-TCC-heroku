@@ -1,5 +1,6 @@
 package com.tcc.CadeMeuBichinho.controller;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class CommentController {
 	@Autowired
 	PetRepository petRepository;
 
-	@PostMapping("")
+	@PostMapping("/add")
 	public ResponseEntity<?> addComment(@RequestBody Map<String, String>  commentPet){
 		try {
 			
@@ -68,12 +69,15 @@ public class CommentController {
 			Pet pet = getPet.get();
 			
 			Comment comment = new Comment();
-	
+			
+			Date date = new Date(Long.parseLong(commentPet.get("date")));
+			comment.setDate(date);
 			comment.setNotificationActive(true);
 			comment.setPet(pet);
 			comment.setUserReceived(userReceived);
 			comment.setUserSend(userSend);
 			comment.setComment(commentPet.get("comment"));
+			
 			commentRepository.save(comment);
 			
 			return new ResponseEntity<Comment>(comment, HttpStatus.OK); 
