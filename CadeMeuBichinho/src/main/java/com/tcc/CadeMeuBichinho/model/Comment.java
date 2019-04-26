@@ -1,5 +1,7 @@
 package com.tcc.CadeMeuBichinho.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,12 +19,14 @@ public class Comment {
 	private Long id; 
 	@ManyToOne
 	private Pet pet;
+	
 	@ManyToOne
 	@JsonIgnore
 	private User userReceived;
 	@ManyToOne
 	@JsonIgnore
 	private User userSend;
+	private Date date; 
 	private String comment;
 	private Boolean notificationActive;
 
@@ -35,15 +39,6 @@ public class Comment {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-
-	public String getComment() {
-		return comment;
-	}
-
-	public void setComment(String comment) {
-		this.comment = comment;
 	}
 
 	public Pet getPet() {
@@ -69,6 +64,22 @@ public class Comment {
 	public void setUserSend(User userSend) {
 		this.userSend = userSend;
 	}
+	
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
 
 	public Boolean getNotificationActive() {
 		return notificationActive;
@@ -77,4 +88,6 @@ public class Comment {
 	public void setNotificationActive(Boolean notificationActive) {
 		this.notificationActive = notificationActive;
 	}
+
+	
 }

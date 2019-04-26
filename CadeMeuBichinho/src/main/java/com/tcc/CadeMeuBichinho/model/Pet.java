@@ -19,13 +19,14 @@ public class Pet {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id; 
 	
-	private Type type;
+	private String name;
+	private Specie specie;
 	private Sex sex;
-	private Size size;
 	private FurColor furColor;
-	private LifeStages lifeStage;
+	private LifeStage lifeStage;
 	@Lob
 	private byte[] photo;
+	private String photoName;
 	private Date date; 
 	private String description;
 	private Double latitude;
@@ -49,12 +50,21 @@ public class Pet {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Type getType() {
-		return type;
+	
+	public String getName() {
+		return name;
 	}
 
-	public void setType(Type type) {
-		this.type = type;
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public Specie getSpecie() {
+		return specie;
+	}
+
+	public void setSpecie(Specie specie) {
+		this.specie = specie;
 	}
 
 	public Sex getSex() {
@@ -65,14 +75,6 @@ public class Pet {
 		this.sex = sex;
 	}
 
-	public Size getSize() {
-		return size;
-	}
-
-	public void setSize(Size size) {
-		this.size = size;
-	}
-
 	public FurColor getFurColor() {
 		return furColor;
 	}
@@ -80,12 +82,12 @@ public class Pet {
 	public void setFurColor(FurColor furColor) {
 		this.furColor = furColor;
 	}
-
-	public LifeStages getLifeStage() {
+	
+	public LifeStage getLifeStage() {
 		return lifeStage;
 	}
 
-	public void setLifeStage(LifeStages lifeStage) {
+	public void setLifeStage(LifeStage lifeStage) {
 		this.lifeStage = lifeStage;
 	}
 
@@ -97,6 +99,14 @@ public class Pet {
 		this.photo = photo;
 	}
 
+	public String getPhotoName() {
+		return photoName;
+	}
+
+	public void setPhotoName(String photoName) {
+		this.photoName = photoName;
+	}
+	
 	public Date getDate() {
 		return date;
 	}
@@ -178,22 +188,18 @@ public class Pet {
 	}
 
 
-
-	public enum Type {
+	public enum Specie {
 		DOG,CAT
 	} 
 	public enum Sex {
 		MALE,FEMALE 
-	} 
-	public enum Size {
-		P,M,G,GG	
 	} 
 
 	public enum FurColor {
 		WHITE,DARK,WHITEANDDARK,CARAMEL,GRAY,STRIPED,WITHPOLKADOTS,ORANGE
 	} 
 
-	public enum LifeStages {
+	public enum LifeStage {
 		PUPPY,ADULT,OLD
 	} 
 	
@@ -201,5 +207,4 @@ public class Pet {
 		FIND,LEAVESYSTEM 
 	} 
 	
-
 }
