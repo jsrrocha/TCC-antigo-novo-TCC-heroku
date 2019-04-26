@@ -10,16 +10,13 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.stereotype.Repository;
 
 import com.tcc.CadeMeuBichinho.model.Pet;
 import com.tcc.CadeMeuBichinho.model.Pet.FurColor;
-import com.tcc.CadeMeuBichinho.model.Pet.LifeStages;
+import com.tcc.CadeMeuBichinho.model.Pet.LifeStage;
 import com.tcc.CadeMeuBichinho.model.Pet.Sex;
-import com.tcc.CadeMeuBichinho.model.Pet.Size;
-import com.tcc.CadeMeuBichinho.model.Pet.Type;
+import com.tcc.CadeMeuBichinho.model.Pet.Specie;
 
 @Repository
 public class PetRepositoryImpl implements PetRepositoryCustom{
@@ -37,7 +34,7 @@ public class PetRepositoryImpl implements PetRepositoryCustom{
 	    
 	    if(petMap.get("type") != null) {
 	    	Integer index = Integer.parseInt(petMap.get("type"));	    	
-	    	Type type = Type.values()[index];  
+	    	Specie type = Specie.values()[index];  
 	    	predicates.add(cb.equal(pet.get("type"),type));	
 	    }
 	    
@@ -46,53 +43,26 @@ public class PetRepositoryImpl implements PetRepositoryCustom{
 			Sex sex = Sex.values()[index];  
 	    	predicates.add(cb.equal(pet.get("sex"),sex));
 	    }
-	    
-	    if(petMap.get("size") != null) {
-	    	Integer index = Integer.parseInt(petMap.get("size"));	    	
-			Size size = Size.values()[index];  
-    		predicates.add(cb.equal(pet.get("size"),size));
-	    }
-	    
+	   
 	    if(petMap.get("furColor") != null) {
 	    	Integer index = Integer.parseInt(petMap.get("furColor"));	    	
 			FurColor fur = FurColor.values()[index];  
-    		predicates.add(cb.equal(pet.get("furColor"),fur));
-    		
+    		predicates.add(cb.equal(pet.get("furColor"),fur));	
 	    }
 	    
 	    if(petMap.get("lifeStages") != null) {
 	    	Integer index = Integer.parseInt(petMap.get("lifeStages"));	    	
-			LifeStages lifeStage = LifeStages.values()[index];  
+			LifeStage lifeStage = LifeStage.values()[index];  
     		predicates.add(cb.equal(pet.get("lifeStages"),lifeStage));
 	    }
-	    
-	    //if(petMap.get("removalReason") != null) {
-	    	//Integer index = Integer.parseInt(petMap.get("removalReason"));	    	
-			//RemovalReason removalReason = RemovalReason.values()[index];  
-    		//predicates.add(cb.equal(pet.get("removalReason"),removalReason));
-	    //}
-	    
-	    //if(petMap.get("remove") != null) {
-	    	//Boolean remove  = Boolean.valueOf(petMap.get("remove"));
-    		//predicates.add(cb.equal(pet.get("remove"),remove)); 
-	    //}
-	    
+	    	    
 	    predicates.add(cb.equal(pet.get("remove"),false)); 
-	    
-	    //testar enviando uma imagem..
-	    if(petMap.get("photo") != null) {
-	    	byte[] backToBytes = Base64.decodeBase64(petMap.get("photo"));
-    		predicates.add(cb.equal(pet.get("photo"),backToBytes));
-
-	    }
 	    
 	    if(petMap.get("date") != null) {
 		    Date date = new Date(Long.parseLong(petMap.get("date")));
     		predicates.add(cb.equal(pet.get("date"),date));
-
 	    }
 	    
-	    //POR enquanto nao tem campo para pesquisar por esse
 	    if(petMap.get("description") != null) {
     		predicates.add(cb.like(pet.get("description"),"%" + petMap.get("description") + "%"));
 	    }
@@ -106,13 +76,12 @@ public class PetRepositoryImpl implements PetRepositoryCustom{
 			Double latitudeLessOneKM = latitude - 0.009044 ;
 			Double longitudeMoreOneKM = longitude + 0.0089831 ;
 			Double longitudeLessOneKM = longitude - 0.0089831 ;
-
 			
 		    predicates.add(cb.between(pet.get("latitude"), latitudeLessOneKM, latitudeMoreOneKM));
 		    predicates.add(cb.between(pet.get("longitude"), longitudeLessOneKM, longitudeMoreOneKM));
 	    }
 	    
-	    
+	    /* Não faz sentido!
 	    if(petMap.get("phone") != null) {
 	    	Integer phone = Integer.parseInt(petMap.get("phone"));
     		predicates.add(cb.equal(pet.get("phone"),phone)); 
@@ -121,23 +90,15 @@ public class PetRepositoryImpl implements PetRepositoryCustom{
 	    if(petMap.get("phoneWithWhats") != null) {
 	    	Boolean phoneWithWhats  = Boolean.valueOf(petMap.get("phoneWithWhats"));
     		predicates.add(cb.equal(pet.get("phoneWithWhats"),phoneWithWhats)); 
-
 	    }
+	    */
 	    
 	    if(petMap.get("lostPet") != null) {
 	    	Boolean lostPet  = Boolean.valueOf(petMap.get("lostPet"));
     		predicates.add(cb.equal(pet.get("lostPet"),lostPet)); 
-
 	    }
-
-	        
-	    //for (Map.Entry<String, String> entry : petMap.entrySet()) {		
-	    	//predicates.add(cb.equal(pet.get(entry.getKey()),Types.DOG));	    	
-	  	//}
 	    
-	    cq.where(predicates.toArray(new Predicate[0]));
-	    
-	    
+	    cq.where(predicates.toArray(new Predicate[0]));  
 	    return em.createQuery(cq).getResultList();
 	}
 	
