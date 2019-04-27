@@ -10,3 +10,5 @@ npm install --save @angular/material @angular/cdk @angular/animations
 npm install --save hammerjs
 
 npm i @angular/material-moment-adapter
+
+npm i moment
