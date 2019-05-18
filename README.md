@@ -12,6 +12,7 @@ npm install --save hammerjs
 npm i @angular/material-moment-adapter
 
 npm install moment --save
+ng update @angular/cli @angular/core --force
 
 http://localhost:8086/cademeubichinho/oauth/token?grant_type=password&username=jess2@hotmail.com&password=pass
 
