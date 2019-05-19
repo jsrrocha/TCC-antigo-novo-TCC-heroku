@@ -1,6 +1,10 @@
 package com.tcc.CadeMeuBichinho.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +18,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.tcc.CadeMeuBichinho.Repository.CommentRepository;
-import com.tcc.CadeMeuBichinho.Repository.PetRepository;
-import com.tcc.CadeMeuBichinho.Repository.UserRepository;
+
 import com.tcc.CadeMeuBichinho.model.Comment;
 import com.tcc.CadeMeuBichinho.model.Pet;
 import com.tcc.CadeMeuBichinho.model.User;
-
+import com.tcc.CadeMeuBichinho.repository.CommentRepository;
+import com.tcc.CadeMeuBichinho.repository.PetRepository;
+import com.tcc.CadeMeuBichinho.repository.UserRepository;
 
 @RestController
 @RequestMapping("comment")
@@ -39,27 +43,16 @@ public class CommentController {
 		try {
 			
 			if(commentPet.get("idPet") == null
-					|| commentPet.get("idSend") == null
-					|| commentPet.get("idReceived") == null) {
-				
-				return new ResponseEntity<String>("Preencha os ids dos usuários e do pet", HttpStatus.BAD_REQUEST); 
+			    || commentPet.get("idReceived") == null) {
+				return new ResponseEntity<String>("Preencha os ids do usuário e do pet", HttpStatus.BAD_REQUEST); 
 			} 
-			
+				
 			Optional<User> optionalUserReceived = userRepository.
 					findById(Long.parseLong(commentPet.get("idReceived"))); 
 			if(!optionalUserReceived.isPresent()) {
 				return new ResponseEntity<String>("User não existe", HttpStatus.BAD_REQUEST); 
 			}
 			User userReceived = optionalUserReceived.get();
-			
-			
-			Optional<User> optionalUserSend = userRepository.
-					findById(Long.parseLong(commentPet.get("idSend")));			
-			if(!optionalUserSend.isPresent()) {
-						return new ResponseEntity<String>("User não existe", HttpStatus.BAD_REQUEST); 
-			}
-			User userSend = optionalUserSend.get();
-			
 
 			Optional<Pet> getPet = petRepository.
 					findById(Long.parseLong(commentPet.get("idPet"))); 
@@ -68,15 +61,26 @@ public class CommentController {
 			}
 			Pet pet = getPet.get();
 			
-			Comment comment = new Comment();
+			User userSend = null;
+			if(!commentPet.get("idSend").equals("")){
+				Optional<User> optionalUserSend = userRepository.
+						findById(Long.parseLong(commentPet.get("idSend")));			
+				if(!optionalUserSend.isPresent()) {
+							return new ResponseEntity<String>("User que enviou não existe", HttpStatus.BAD_REQUEST); 
+				}
+				userSend = optionalUserSend.get();
+			}
 			
-			Date date = new Date(Long.parseLong(commentPet.get("date")));
+			SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+			Date date = simpleFormat.parse(commentPet.get("date"));
+			
+			Comment comment = new Comment();
 			comment.setDate(date);
 			comment.setNotificationActive(true);
 			comment.setPet(pet);
-			comment.setUserReceived(userReceived);
-			comment.setUserSend(userSend);
-			comment.setComment(commentPet.get("comment"));
+			comment.setUserReceived(userReceived);  //Usuário logado
+			comment.setUserSend(userSend);          //Usuário que comentou no pet..
+			comment.setComment(commentPet.get("comment")); 
 			
 			commentRepository.save(comment);
 			
@@ -122,7 +126,8 @@ public class CommentController {
 			if(!getComment.isPresent()) {
 				return new ResponseEntity<String>("Comentário não existe", HttpStatus.BAD_REQUEST); 
 			}
-			return new ResponseEntity<Optional<Comment>>(getComment, HttpStatus.OK); 
+			Comment comment = getComment.get();
+			return new ResponseEntity<Comment>(comment, HttpStatus.OK); 
 		}catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST); 
@@ -130,7 +135,7 @@ public class CommentController {
 	}
 
 	@PostMapping("/notification/desactive/{id}")
-	public ResponseEntity<?> getActiveByOrderAsc(@PathVariable Long id){
+	public ResponseEntity<?> desactiveNotifications(@PathVariable Long id){
 		try {	
 			
 			Optional<Comment> comment = commentRepository.findById(id);
@@ -141,7 +146,7 @@ public class CommentController {
 			desactiveComment.setNotificationActive(false);
 			
 			commentRepository.save(desactiveComment);
-			return new ResponseEntity<>("Notificação removida com sucesso", HttpStatus.OK); 
+			return new ResponseEntity<Object>("Notificação removida com sucesso", HttpStatus.OK); 
 		}catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST); 
@@ -149,11 +154,40 @@ public class CommentController {
 	}
 	
 	@Transactional 
-	@GetMapping("/notification/active/asc")
-	public ResponseEntity<?> getActiveByOrderAsc(){
+	@GetMapping("/notification/user/{userId}/active/asc")
+	public ResponseEntity<?> getActiveNotificationByUserAndOrderAsc(@PathVariable Long userId){ 
 		try {
-			Iterable<Comment> list = commentRepository.findByNotificationActiveOrderByIdAsc(true);
-			return new ResponseEntity<>(list, HttpStatus.OK); 
+			
+			Optional<User> optionalUserReceived = userRepository.
+					findById(userId);			
+			if(!optionalUserReceived.isPresent()) {
+						return new ResponseEntity<String>("User logado não existe", HttpStatus.BAD_REQUEST); 
+			}
+			User userReceived = optionalUserReceived.get();
+			
+			List<Comment> comments = commentRepository
+					.findByNotificationActiveAndUserReceivedOrderByIdAsc(true,userReceived);
+			
+			List<Map<String, String>> commentsMap = new ArrayList<Map<String,String>>();
+			for(Comment comment: comments) {
+				Map<String, String>  map = new HashMap<String, String>();
+                                map.put("id",comment.getId());
+				map.put("nameUser", comment.getUserSend().getName());
+				map.put("phone", comment.getUserSend().getPhone().toString());
+				map.put("phoneWithWhats", comment.getUserSend().getPhoneWithWhats().toString());
+				
+				map.put("name", comment.getPet().getName());
+				map.put("specie", comment.getPet().getSpecie().toString());
+				map.put("sex", comment.getPet().getSex().toString());
+				map.put("lostPet", comment.getPet().getLostPet().toString());
+				
+				map.put("date", comment.getDate().toString());
+				map.put("comment", comment.getComment());
+				
+				commentsMap.add(map);
+			}
+			
+			return new ResponseEntity<>(commentsMap, HttpStatus.OK); 
 		}catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST); 
@@ -170,7 +204,7 @@ public class CommentController {
 			Comment removeComment = comment.get();
 			commentRepository.delete(removeComment);
 
-			return new ResponseEntity<String>("Comentário removido com sucesso", HttpStatus.OK); 
+			return new ResponseEntity<Object>("Comentário removido com sucesso", HttpStatus.OK); 
 		}catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST); 

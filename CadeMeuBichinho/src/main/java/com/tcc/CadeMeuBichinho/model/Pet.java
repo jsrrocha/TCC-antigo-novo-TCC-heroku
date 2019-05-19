@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table; 
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore; 
 
@@ -28,10 +29,11 @@ public class Pet {
 	private byte[] photo;
 	private String photoName;
 	private Date date; 
+        @Size(min = 0, max = 500)
 	private String description;
 	private Double latitude;
 	private Double longitude;
-	private Integer phone;
+	private Long phone;
 	private Boolean phoneWithWhats;
 	private Boolean lostPet;
 	private Boolean remove;
@@ -131,11 +133,11 @@ public class Pet {
 		this.longitude = longitude;
 	}
 
-	public Integer getPhone() {
+	public Long getPhone() {
 		return phone;
 	}
 
-	public void setPhone(Integer phone) {
+	public void setPhone(Long phone) {
 		this.phone = phone;
 	}
 
@@ -189,22 +191,96 @@ public class Pet {
 
 
 	public enum Specie {
-		DOG,CAT
-	} 
+		DOG, CAT;
+
+		@Override
+		public String toString() {
+			switch (this) {
+			case DOG:
+				return "Cachorro";
+			case CAT:
+				return "Gato";
+			default:
+				throw new IllegalArgumentException();
+			}
+		}
+	}
+
 	public enum Sex {
-		MALE,FEMALE 
-	} 
+		MALE, FEMALE;
+
+		@Override
+		public String toString() {
+			switch (this) {
+			case MALE:
+				return "Macho";
+			case FEMALE:
+				return "Fêmea";
+			default:
+				throw new IllegalArgumentException();
+			}
+		}
+	}
 
 	public enum FurColor {
-		WHITE,DARK,WHITEANDDARK,CARAMEL,GRAY,STRIPED,WITHPOLKADOTS,ORANGE
-	} 
+		WHITE, DARK, WHITEANDDARK, CARAMEL, GRAY, STRIPED, WITHPOLKADOTS, ORANGE;
+
+		@Override
+		public String toString() {
+			switch (this) {
+			case WHITE:
+				return "Branco";
+			case DARK:
+				return "Preto";
+			case WHITEANDDARK:
+				return "Preto e branco";
+			case CARAMEL:
+				return "Marrom/Caramelo";
+			case GRAY:
+				return "Cinza";
+			case STRIPED:
+				return "Malhado/Listrado";
+			case WITHPOLKADOTS:
+				return "Com bolinhas/manchinhas";
+			case ORANGE:
+				return "Laranja";
+			default:
+				throw new IllegalArgumentException();
+			}
+		}
+	}
+
 
 	public enum LifeStage {
-		PUPPY,ADULT,OLD
-	} 
-	
+		PUPPY, ADULT, OLD;
+
+		@Override
+		public String toString() {
+			switch (this) {
+			case PUPPY:
+				return "Filhote";
+			case ADULT:
+				return "Adulto";
+			case OLD:
+				return "Idoso";
+			default:
+				throw new IllegalArgumentException();
+			}
+		}
+	}
+
 	public enum RemovalReason {
-		FIND,LEAVESYSTEM 
-	} 
-	
+		FIND, LEAVESYSTEM;
+		@Override
+		public String toString() {
+			switch (this) {
+			case FIND:
+				return "Já está com os donos";
+			case LEAVESYSTEM:
+				return "Retirar do sistema";
+			default:
+				throw new IllegalArgumentException();
+			}
+		}
+	}
 }

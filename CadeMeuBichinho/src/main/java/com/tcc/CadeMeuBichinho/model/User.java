@@ -1,8 +1,8 @@
 package com.tcc.CadeMeuBichinho.model;
 
-import java.security.MessageDigest;
+
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
+
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,6 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "Users")
@@ -24,14 +27,18 @@ public class User {
 	private String name;
 	@Column(unique = true,name = "email")
 	@Email
-	private String email; //user desativado com email?
+	private String email; 
+	@Size(min = 0, max = 500)
 	private String password;
 	private Integer phone;
 	private Boolean phoneWithWhats;
+	@JsonIgnore
 	@OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
 	private List<Pet> pets;
+	@JsonIgnore
 	@OneToMany(mappedBy = "userSend",cascade = CascadeType.ALL) 
 	private List<Comment> messagesSend;
+	@JsonIgnore
 	@OneToMany(mappedBy = "userReceived",cascade = CascadeType.ALL)
 	private List<Comment> messagesReceived;
 	private Boolean active;
@@ -61,8 +68,7 @@ public class User {
 	}
 
 	public void setPassword(String password) throws NoSuchAlgorithmException {
-		String codedPassword = encryptPasswordInSha(password);
-		this.password = codedPassword;
+		this.password = password;
 	}
 
 	
@@ -121,18 +127,6 @@ public class User {
 		this.messagesReceived = messagesReceived;
 	}
 	
-    public String encryptPasswordInSha(String password) throws NoSuchAlgorithmException {
-    	MessageDigest digest = MessageDigest.getInstance("SHA-1");
-		digest.update(password.getBytes());
-		byte[] bytes = digest.digest();
-		
-		String codedPassword = Base64.getEncoder().encodeToString(bytes);
-		System.out.println("Senha SHA1 set: " + codedPassword);
-    	
-    	return codedPassword;
-    }
-
-
 	public Boolean getActive() {
 		return active;
 	}
